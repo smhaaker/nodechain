@@ -2,11 +2,7 @@ const SHA256 = require('crypto-js/sha256')
 const Block = require('./block');
 const fs = require('fs');
 
-let dateTime = Date()
-console.log('current time:' + dateTime)
-
 // check if blockchain is already downloaded.
-
 function fileExists(filePath)
 {
     try
@@ -29,21 +25,23 @@ class Blockchain{
     }
 
     createGenesis() {
-        return new Block(Date.now(), "Genesis block", "0")
+        return new Block(0, Date.now(), "Genesis block", "0");
     }
 
-    latestBlock() {
-        return this.chain[this.chain.length - 1]
+
+    getLatestBlock() {
+        return this.chain[this.chain.length - 1];
     }
 
     addBlock(newBlock){
-        newBlock.previousHash = this.latestBlock().hash;
+        newBlock.previousHash = this.getLatestBlock().hash;
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
 
-    checkValid() {
-        for(let i = 1; i < this.chain.length; i++) {
+
+    isChainValid() {
+        for (let i = 1; i < this.chain.length; i++){
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[i - 1];
 
@@ -57,12 +55,28 @@ class Blockchain{
         }
         return true;
     }
+
 }
 
-let chain = '';
-chain = new Blockchain();
-chain.addBlock(new Block(Date.now(), {data: 'Hello'}));
+let nodechain = new Blockchain();
+nodechain.addBlock(new Block(1, Date.now(), { amount: 4 }));
+nodechain.addBlock(new Block(2, Date.now(), { data: 'blah' }));
 
+// Check if chain is valid (will return true)
+console.log('Blockchain valid? ' + nodechain.isChainValid());
+
+// Let's now manipulate the data
+nodechain.chain[1].data = { amount: 100 };
+
+// Check our chain again (will now return false)
+console.log("Blockchain valid? " + nodechain.isChainValid());
+
+// output some data
+var jsonFile = JSON.stringify(nodechain, null, 4);
+console.log(jsonFile)
+
+
+/* writes chain to json
 var obj = {
   table: []
 };
@@ -71,9 +85,8 @@ var jsonFile = JSON.stringify(chain, null, 4);
 
 console.log(jsonFile)
 
-//fs.writeFile('blockFile.json', jsonFile, 'utf8');
-
 fs.appendFile('blockFile.json', jsonFile, (err) => {
   if (err) throw err;
   console.log('The "data to append" was appended to file!');
 });
+*/
