@@ -1,7 +1,6 @@
 # nodechain
 
-Experimental Node Js blockchain based on https://www.savjee.be/2017/07/Writing-tiny-blockchain-in-JavaScript/
-
+Experimental Node Js blockchain based on misc tutorials
 
 Quick todos.
 

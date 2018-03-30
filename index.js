@@ -68,6 +68,21 @@ nodechain.addBlock(new Block(1, Date.now(), { amount: 4 }));
 nodechain.addBlock(new Block(2, Date.now(), { data: 'blah' }));
 nodechain.addBlock(new Block(3, Date.now(), { data: 'Heh' }));
 nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+
+// verbose options
+console.log(JSON.stringify(nodechain.chain[1], null, 4));
+console.log(JSON.stringify(nodechain.chain[2].data));
+console.log(JSON.stringify(nodechain.chain[3]));
+console.log(JSON.stringify(nodechain.chain[4]));
+console.log(JSON.stringify(nodechain.chain[5]));
+console.log(JSON.stringify(nodechain.chain[6]));
+
+
 
 // Check if chain is valid (will return true)
 console.log('Blockchain valid? ' + nodechain.isChainValid());
@@ -79,8 +94,8 @@ nodechain.chain[1].data = { amount: 100 };
 console.log("Blockchain valid? " + nodechain.isChainValid());
 
 // output some data
-var jsonFile = JSON.stringify(nodechain, null, 4);
-console.log(jsonFile)
+//var jsonFile = JSON.stringify(nodechain, null, 4);
+//console.log(jsonFile)
 
 
 /* writes chain to json
