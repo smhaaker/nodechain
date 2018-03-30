@@ -2,6 +2,9 @@ const SHA256 = require('crypto-js/sha256')
 const Block = require('./block');
 const fs = require('fs');
 
+let diff = 4;
+
+console.log("Starting NodeChain, difficulty: " + diff)
 // check if blockchain is already downloaded.
 function fileExists(filePath)
 {
@@ -17,11 +20,12 @@ function fileExists(filePath)
     }
 }
 
-fileExists('blockFile.json')
+// fileExists('blockFile.json')
 
 class Blockchain{
     constructor() {
         this.chain = [this.createGenesis()];
+        this.difficulty = diff; // starts with 2 zeros.
     }
 
     createGenesis() {
@@ -35,7 +39,8 @@ class Blockchain{
 
     addBlock(newBlock){
         newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.hash = newBlock.calculateHash();
+        newBlock.mineBlock(this.difficulty);
+    //    newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
 
@@ -61,6 +66,8 @@ class Blockchain{
 let nodechain = new Blockchain();
 nodechain.addBlock(new Block(1, Date.now(), { amount: 4 }));
 nodechain.addBlock(new Block(2, Date.now(), { data: 'blah' }));
+nodechain.addBlock(new Block(3, Date.now(), { data: 'Heh' }));
+nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
 
 // Check if chain is valid (will return true)
 console.log('Blockchain valid? ' + nodechain.isChainValid());
