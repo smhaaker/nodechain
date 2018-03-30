@@ -39,6 +39,10 @@ class Blockchain{
 
     addBlock(newBlock){
         newBlock.previousHash = this.getLatestBlock().hash;
+        newBlock.index = this.getLatestBlock().index + 1;
+        console.log("Current Block index: " + this.getLatestBlock().index);
+        console.log("New Block index: " + newBlock.index);
+
         newBlock.mineBlock(this.difficulty);
     //    newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
@@ -64,34 +68,28 @@ class Blockchain{
 }
 
 let nodechain = new Blockchain();
-nodechain.addBlock(new Block(1, Date.now(), { amount: 4 }));
-nodechain.addBlock(new Block(2, Date.now(), { data: 'blah' }));
-nodechain.addBlock(new Block(3, Date.now(), { data: 'Heh' }));
-nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
-nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
-nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
-nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
-nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
-nodechain.addBlock(new Block(4, Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(Date.now(), { amount: 4 }));
+nodechain.addBlock(new Block(Date.now(), { data: 'blah' }));
+nodechain.addBlock(new Block(Date.now(), { data: 'Heh' }));
+nodechain.addBlock(new Block(Date.now(), { data: 'Coco' }));
 
 // verbose options
-console.log(JSON.stringify(nodechain.chain[1], null, 4));
+/*console.log(JSON.stringify(nodechain.chain[1], null, 4));
 console.log(JSON.stringify(nodechain.chain[2].data));
 console.log(JSON.stringify(nodechain.chain[3]));
-console.log(JSON.stringify(nodechain.chain[4]));
-console.log(JSON.stringify(nodechain.chain[5]));
-console.log(JSON.stringify(nodechain.chain[6]));
+*/
+
+console.log(JSON.stringify(nodechain.chain, null, 4));
 
 
+// Check if chain is valid
+console.log('Blockchain valid: ' + nodechain.isChainValid());
 
-// Check if chain is valid (will return true)
-console.log('Blockchain valid? ' + nodechain.isChainValid());
-
-// Let's now manipulate the data
+// Manipulating data
 nodechain.chain[1].data = { amount: 100 };
 
-// Check our chain again (will now return false)
-console.log("Blockchain valid? " + nodechain.isChainValid());
+// Check if chain is valid
+console.log("Blockchain valid: " + nodechain.isChainValid());
 
 // output some data
 //var jsonFile = JSON.stringify(nodechain, null, 4);
