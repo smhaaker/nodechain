@@ -1,6 +1,7 @@
 const SHA256 = require('crypto-js/sha256')
 const Block = require('./block');
 const fs = require('fs');
+//const http = require('./http.js')
 
 let diff = 4;
 
@@ -66,6 +67,7 @@ class Blockchain{
     }
 
 }
+
 
 let nodechain = new Blockchain();
 nodechain.addBlock(new Block(Date.now(), { amount: 4 }));
