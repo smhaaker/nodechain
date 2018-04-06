@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express()
 const Blockchain = require('./chain.js')
 const Block = require('./block');
+const path = require('path');
 
 // add conditional if new blockchain is needed or not
 let nodechain = new Blockchain();
@@ -12,7 +13,11 @@ console.log('New chain running');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => res.send('NodeChain Explorer'))
+app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/WebExplorer/index.html')));
+
+
+//res.send('NodeChain Explorer'))
+
 
 app.listen(3000, () => console.log('NodeChain Explorer listening on port 3000!'))
 
