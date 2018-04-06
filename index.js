@@ -1,3 +1,5 @@
+// index is outdated. Keeping around for a while
+
 const SHA256 = require('crypto-js/sha256')
 const Block = require('./block');
 const fs = require('fs');
