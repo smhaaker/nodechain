@@ -9,39 +9,38 @@
     <header>
       <h1>NodeChain Explorer</h1>
       <nav>
+        <a href="">Mine Blocks</a> |
         <a href="./blocks">View Blocks</a> |
-        <a href="./blocks">View Blocks</a> |
-        <a href="./blocks">View Blocks</a> |
-        <a href="./blocks">View Blocks</a>
+        <a href="" onclick="viewBlocks()">View Latest Block</a> |
+        <a href="">View Balance</a> |
+        <a href="">View Peers</a>
       </nav>
 
     </header>
 
-
-
-
-        <p> Mine a new block
+        <p> Mine a new block with data
           <input type="text" id="input" placeholder="data to enter">
-
           <button type="button" name="button" onclick="mine()">
              Mine
           </button>
         </p>
 
-          <p><input type="checkbox" id="mine"></p>
+
+          <!--p><input type="checkbox" id="mine"></p-->
+
           <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
           <script>
-          var socket = io(); //load socket.io-client and connect to the host that serves the page
-          window.addEventListener("load", function(){ //when page loads
+          var socket = io();
+/*          window.addEventListener("load", function(){
             var lightbox = document.getElementById("mine");
-            lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
-              socket.emit("mine", Number(this.checked)); //send button status to server (as 1 or 0)
+            lightbox.addEventListener("change", function() {
+              socket.emit("mine", Number(this.checked));
             });
           });
-          socket.on('mine', function (data) { //get button status from client
-            document.getElementById("mine").checked = data; //change checkbox according to push button on Raspberry Pi
-            socket.emit("mine", data); //send push button status to back to server
-          });
+          socket.on('mine', function (data) {
+            document.getElementById("mine").checked = data;
+            socket.emit("mine", data);
+          });*/
           function mine(data) {
             socket.emit('mine', document.getElementById('input').value);
 //            console.log(data);
@@ -51,8 +50,11 @@
           console.log(data);
           addMessage(data.message);
           socket.emit('i am client', {data: 'foo!', id: data.id});
-
           });
+
+
+
+
 
           socket.on('currentBlock', function(data) {
             //   addMessage(data.message);
@@ -75,7 +77,22 @@
               messages.appendChild(el);
           }
 
+// fix later
+          function viewBlocks(){
+            console.log('test')
+          }
+
+          socket.on('viewBlocks', function(data) {
+          console.log(data);
+//          addMessage(data.message);
+          });
+
+
+
           </script>
+          <p>View Blocks: <ul id='viewBlocks'></ul></p>
+
+
 
           <p>Current Block: <ul id='currentblock'></ul></p>
 

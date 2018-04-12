@@ -29,7 +29,7 @@ io.sockets.on('connection', function (socket){
   socket.emit('currentBlock', { message: 'current block: N/A'});
   let mine;
   socket.on('mine', function(data){
-    mine = nodechain.addBlock(new Block(0, Date.now(), { data: 4 }));
+    mine = nodechain.addBlock(new Block(0, Date.now(), { data: data }));
     if(mine){
       console.log(mine);
     }
@@ -39,6 +39,10 @@ io.sockets.on('connection', function (socket){
     socket.emit('currentBlock', { message: 'block number: ' + nodechain.chain[nodechain.chain.length-2].index + " " + nodechain.chain[nodechain.chain.length-1].previousHash});
     socket.emit('minedBlock', { message: 'block mined: ' + nodechain.chain[nodechain.chain.length-1].previousHash});
   });
+  socket.on('viewBlocks', function(data){
+    socket.emit('viewBlocks', { message: 'Latest Block: ' + nodechain.chain[nodechain.chain.length-1]});
+  });
+
 });
 
 /*  curl requests */
@@ -46,7 +50,7 @@ io.sockets.on('connection', function (socket){
 app.get('/blocks', (req, res) => res.send(JSON.stringify(nodechain.chain, null, 4)));
 // gets blocks from the blockFile.json
 // Save to blockFile later.
-//app.get('/blocks', (req, res) => res.sendFile('./blockFile.json' , { root : __dirname}));
+// app.get('/blocks', (req, res) => res.sendFile('./blockFile.json' , { root : __dirname}));
 // mining new blocks via curl. as:
 // curl localhost:3000/mine
 app.get('/mine',function(req,res){
