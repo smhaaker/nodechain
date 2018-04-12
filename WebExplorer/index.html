@@ -1,24 +1,32 @@
 <html>
   <head>
     <title>NodeChain Explorer</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+
   </head>
   <body bgcolor=white>
 
-          <h1>NodeChain Explorer</h1>
-          <a href="./blocks">View Blocks</a>
-          <!--a href="./mine">Mine New Block</a>
+    <header>
+      <h1>NodeChain Explorer</h1>
+      <nav>
+        <a href="./blocks">View Blocks</a> |
+        <a href="./blocks">View Blocks</a> |
+        <a href="./blocks">View Blocks</a> |
+        <a href="./blocks">View Blocks</a>
+      </nav>
 
-          <form action="./mine">
-            <button>Mine</button>
-          </form -->
+    </header>
 
 
+
+
+        <p> Mine a new block
           <input type="text" id="input" placeholder="data to enter">
 
           <button type="button" name="button" onclick="mine()">
              Mine
           </button>
-
+        </p>
 
           <p><input type="checkbox" id="mine"></p>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
