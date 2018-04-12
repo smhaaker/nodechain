@@ -1,4 +1,4 @@
-// index is outdated. Keeping around for a while
+// index is outdated. Keeping for tests
 
 const SHA256 = require('crypto-js/sha256')
 const Block = require('./block');
@@ -43,9 +43,10 @@ class Blockchain{
     addBlock(newBlock){
         newBlock.previousHash = this.getLatestBlock().hash;
         newBlock.index = this.getLatestBlock().index + 1;
+//        newBlock.timestamp = Date.now();
         console.log("Current Block index: " + this.getLatestBlock().index);
         console.log("New Block index: " + newBlock.index);
-
+        console.log(newBlock);
         newBlock.mineBlock(this.difficulty);
     //    newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
@@ -72,10 +73,10 @@ class Blockchain{
 
 
 let nodechain = new Blockchain();
-nodechain.addBlock(new Block(Date.now(), { amount: 4 }));
-nodechain.addBlock(new Block(Date.now(), { data: 'blah' }));
-nodechain.addBlock(new Block(Date.now(), { data: 'Heh' }));
-nodechain.addBlock(new Block(Date.now(), { data: 'Coco' }));
+nodechain.addBlock(new Block(0, Date.now(), { amount: 4 }));
+nodechain.addBlock(new Block(0, Date.now(), { data: 'blah' }));
+nodechain.addBlock(new Block(0, Date.now(), { data: 'Heh' }));
+nodechain.addBlock(new Block(0, Date.now(), { data: 'Coco' }));
 
 // verbose options
 /*console.log(JSON.stringify(nodechain.chain[1], null, 4));

@@ -6,11 +6,73 @@
 
           <h1>NodeChain Explorer</h1>
           <a href="./blocks">View Blocks</a>
-          <a href="./mine">Mine New Block</a>
+          <!--a href="./mine">Mine New Block</a>
 
           <form action="./mine">
             <button>Mine</button>
-          </form>
+          </form -->
+
+
+          <input type="text" id="input" placeholder="data to enter">
+
+          <button type="button" name="button" onclick="mine()">
+             Mine
+          </button>
+
+
+          <p><input type="checkbox" id="mine"></p>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
+          <script>
+          var socket = io(); //load socket.io-client and connect to the host that serves the page
+          window.addEventListener("load", function(){ //when page loads
+            var lightbox = document.getElementById("mine");
+            lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
+              socket.emit("mine", Number(this.checked)); //send button status to server (as 1 or 0)
+            });
+          });
+          socket.on('mine', function (data) { //get button status from client
+            document.getElementById("mine").checked = data; //change checkbox according to push button on Raspberry Pi
+            socket.emit("mine", data); //send push button status to back to server
+          });
+          function mine(data) {
+            socket.emit('mine', document.getElementById('input').value);
+//            console.log(data);
+          };
+          socket.on('welcome', function(data) {
+            //   addMessage(data.message);
+          console.log(data);
+          addMessage(data.message);
+          socket.emit('i am client', {data: 'foo!', id: data.id});
+
+          });
+
+          socket.on('currentBlock', function(data) {
+            //   addMessage(data.message);
+          console.log(data);
+          addMessage(data.message);
+
+          });
+
+          socket.on('minedBlock', function(data) {
+            //   addMessage(data.message);
+          console.log(data);
+
+          });
+
+          function addMessage(message) {
+              var text = document.createTextNode(message),
+                  el = document.createElement('li'),
+                  messages = document.getElementById('currentblock');
+              el.appendChild(text);
+              messages.appendChild(el);
+          }
+
+          </script>
+
+          <p>Current Block: <ul id='currentblock'></ul></p>
+
+          <ul id='messages'></ul>
+
 
   </body>
 </html>

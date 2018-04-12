@@ -5,11 +5,53 @@ const Blockchain = require('./chain.js')
 const Block = require('./block');
 const path = require('path');
 
+// adding websockets, remove express, bodyParser and app and path
+const http = require('http').createServer(handler);
+const fs = require('fs');
+const io = require('socket.io')(http)
+
 // add conditional if new blockchain is needed or not
 let nodechain = new Blockchain();
 // new blockChain started
 console.log('New chain running');
 
+
+http.listen(8080);
+
+function handler (req, res){
+  fs.readFile(__dirname + '/WebExplorer/index.html', function(err, data)
+    {
+        if (err) {
+          res.writeHead(404, {'Content-Type': 'text/html'});
+          return res.end("404 Not Found");
+        }
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        return res.end();
+    });
+}
+
+io.sockets.on('connection', function (socket){
+  console.log('A user connected');
+  socket.emit('currentBlock', { message: 'current block: N/A'});
+  let mine;
+  socket.on('mine', function(data){
+    mine = nodechain.addBlock(new Block(0, Date.now(), { data: 4 }));
+    if(mine){
+      console.log(mine);
+    }
+    //    console.log(nodechain.chain[nodechain.chain.length-1].index);
+    //
+
+    /* CLEAN UP ARRAY INDEX */
+    socket.emit('currentBlock', { message: 'block number: ' + nodechain.chain[nodechain.chain.length-2].index + " " + nodechain.chain[nodechain.chain.length-1].previousHash});
+    socket.emit('minedBlock', { message: 'block mined: ' + nodechain.chain[nodechain.chain.length-1].previousHash});
+
+
+  });
+});
+
+/*
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -35,7 +77,7 @@ app.get('/mine',function(req,res){
    const newBlock = nodechain.addBlock(new Block(1, { amount: 4 }));
    res.send(newBlock);
 });
-
+*/
 
 // app.post('/mine',function(req,res){
 //   const newBlock = nodechain.addBlock(new Block(1, { amount: 4 }));
